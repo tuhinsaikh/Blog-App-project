@@ -4,7 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.blogapp.exception.BlogException;
@@ -65,9 +70,12 @@ public class BlogServiceImpl implements BlogService{
 	}
 
 	@Override
-	public List<Blog> getBlogsPaginatingAndSorting(Integer pageSize, Integer pageNo, String sortBy) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Blog> getBlogsPaginatingAndSorting(Integer pageSize, Integer pageNo, String sortBy, String sortDirection) {
+		Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+		Pageable pageable =   PageRequest.of(pageNo, pageSize,sort);
+		Page<Blog> blogs = blogDao.findAll(pageable);
+		List<Blog> blogList = blogs.getContent();
+		return blogList;
 	}
 
 }

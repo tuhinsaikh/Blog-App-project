@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.blogapp.model.Blog;
@@ -47,5 +48,17 @@ public class BlogController {
     @DeleteMapping("/posts/{id}")
     public ResponseEntity<String> deleteBlogByIdController(@PathVariable("id") Integer blogId){
     	return new ResponseEntity<String>(blogService.deleteBlogById(blogId), HttpStatus.OK);
+    }
+    
+    @GetMapping("/posts/")
+    public ResponseEntity<List<Blog>> getBlogsPaginatingAndSortingController(
+    		@RequestParam(value = "pageSize",defaultValue = "10",required = false) Integer pageSize,
+    		@RequestParam(value = "pageNo",defaultValue = "0",required = false) Integer pageNo,
+    		@RequestParam(value = "sortBy",defaultValue = "blogId",required = false) String sortBy,
+    		@RequestParam(value = "sortDirection",defaultValue = "ASC",required = false) String sortDirection
+    		){
+    	List<Blog> blogs = new ArrayList<>();
+    	blogs = blogService.getBlogsPaginatingAndSorting(pageSize, pageNo, sortBy, sortDirection);
+    	return new ResponseEntity<List<Blog>>(blogs, HttpStatus.OK);
     }
 }
