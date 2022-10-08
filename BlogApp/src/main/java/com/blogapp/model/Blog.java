@@ -34,9 +34,11 @@ public class Blog {
 	@Column(columnDefinition = "TEXT")
 	private String body;
 	
+	private String name;
+	
 	@UpdateTimestamp
 	private LocalDateTime postTime;
 	
-//	@OneToMany(fetch = FetchType.LAZY)
-//	List<Comment> comments = new ArrayList<>();
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	List<Comment> comments = new ArrayList<>();
 }

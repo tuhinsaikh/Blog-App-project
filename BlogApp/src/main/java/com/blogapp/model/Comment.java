@@ -24,7 +24,6 @@ public class Comment {
    private Integer commentId;
 	@Column(columnDefinition = "TEXT")
    private String commentBody;
+   private String name;
    private LocalDateTime commentTime;
-   @Column(unique = true)
-   private Integer blogId;
 }
