@@ -14,13 +14,18 @@ import org.springframework.stereotype.Service;
 
 import com.blogapp.exception.BlogException;
 import com.blogapp.model.Blog;
+import com.blogapp.model.Comment;
 import com.blogapp.repository.BlogDao;
+import com.blogapp.repository.CommentDao;
 
 @Service
 public class BlogServiceImpl implements BlogService{
 	
 	@Autowired
 	private BlogDao blogDao;
+	
+	@Autowired
+	private CommentDao commentDao;
 
 	@Override
 	public Blog createBlog(Blog blog) {
@@ -31,7 +36,7 @@ public class BlogServiceImpl implements BlogService{
 	public List<Blog> getAllBlog() {
 		List<Blog> blogs = new ArrayList<>();
 		blogs = blogDao.findAll();
-		if(blogs==null) {
+		if(blogs.size()<=0) {
 			throw new BlogException("No blogs found");
 		}
 		return blogs;
@@ -46,7 +51,7 @@ public class BlogServiceImpl implements BlogService{
 		Blog databaseBlog = opt.get();
 		databaseBlog.setBody(blog.getBody());
 		databaseBlog.setTitle(blog.getTitle());
-		
+		databaseBlog.setName(blog.getName());
 		return blogDao.save(databaseBlog);
 	}
 
@@ -64,6 +69,11 @@ public class BlogServiceImpl implements BlogService{
 		Optional<Blog> opt = blogDao.findById(blogId);
 		if(opt.isEmpty()) {
 			throw new BlogException("blog not found with the blogId "+blogId+"");
+		}
+		Blog blog = opt.get();
+		List<Comment> blogComments = blog.getComments();
+		for(Comment comments: blogComments) {
+			commentDao.delete(comments);
 		}
 		blogDao.delete(opt.get());
 		return "deleted successfully";

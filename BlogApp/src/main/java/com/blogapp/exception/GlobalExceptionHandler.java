@@ -21,6 +21,16 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<ErrorDetails>(error,HttpStatus.BAD_REQUEST);
 	}
 	
+	@ExceptionHandler(CommentException.class)
+	public ResponseEntity<ErrorDetails> ExceptionHandler(CommentException io, WebRequest wr){
+		System.out.println("inside CommentException..");
+		ErrorDetails error = new ErrorDetails();
+		error.setTimestamp(LocalDateTime.now());
+		error.setMessage(io.getMessage());
+		error.setDetails(wr.getDescription(false));
+		return new ResponseEntity<ErrorDetails>(error,HttpStatus.BAD_REQUEST);
+	}
+	
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ErrorDetails> ExceptionHandler(Exception io, WebRequest wr){
 		System.out.println("inside Exception..");
