@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,5 +41,17 @@ public class CommentController {
 	public ResponseEntity<List<Comment>> getAllCommentByPostIdController(@PathVariable("blogId") Integer blogId){
 		List<Comment> comments = commentService.getAllCommentByPostId(blogId);
 		return new ResponseEntity<List<Comment>>(comments,HttpStatus.OK);
+	}
+	
+	@GetMapping("/posts/{blogId}/comments/{commentId}")
+	public ResponseEntity<Comment> getCommentByCommentIdAndPostIdController(@PathVariable("blogId") Integer blogId, @PathVariable("commentId") Integer commentId){
+		Comment comment = commentService.getCommentByCommentIdAndPostId(blogId, commentId);
+		return new ResponseEntity<Comment>(comment,HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/posts/{blogId}/comments/{commentId}")
+	public ResponseEntity<String> deleteCommentByCommentIdAndPostIdController(@PathVariable("blogId") Integer blogId, @PathVariable("commentId") Integer commentId){
+		String comment = commentService.deleteCommentByCommentIdAndPostId(blogId, commentId);
+		return new ResponseEntity<String>(comment,HttpStatus.OK);
 	}
 }

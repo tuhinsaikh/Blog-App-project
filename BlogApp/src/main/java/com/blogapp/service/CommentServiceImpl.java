@@ -44,7 +44,7 @@ public class CommentServiceImpl implements CommentService{
 		}
 		
 		Optional<Comment> optCmnt = commentDao.findById(commentId);
-		if(opt.isEmpty()) {
+		if(optCmnt.isEmpty()) {
 			throw new CommentException("comment not found");
 		}
 		Comment dataComment = optCmnt.get();
@@ -62,6 +62,41 @@ public class CommentServiceImpl implements CommentService{
 		Blog blog = opt.get();
 		List<Comment> comments = blog.getComments();
 		return comments;
+	}
+
+	@Override
+	public Comment getCommentByCommentIdAndPostId(Integer blogId, Integer commentId) {
+		Optional<Blog> opt = blogDao.findById(blogId);
+		if(opt.isEmpty()) {
+			throw new BlogException("blog not found");
+		}
+		Optional<Comment> optCmnt = commentDao.findById(commentId);
+		if(optCmnt.isEmpty()) {
+			throw new CommentException("comment not found");
+		}
+		return optCmnt.get();
+	}
+
+	@Override
+	public String deleteCommentByCommentIdAndPostId(Integer blogId, Integer commentId) {
+		Optional<Blog> opt = blogDao.findById(blogId);
+		if(opt.isEmpty()) {
+			throw new BlogException("blog not found");
+		}
+		Optional<Comment> optCmnt = commentDao.findById(commentId);
+		if(optCmnt.isEmpty()) {
+			throw new CommentException("comment not found");
+		}
+		Blog blog = opt.get();
+		List<Comment> comments = blog.getComments();
+		Comment dataComment = optCmnt.get();
+		System.out.println(comments);
+		comments.remove(dataComment);
+		System.out.println(comments);
+		blog.setComments(comments);
+		blogDao.save(blog);
+		commentDao.delete(dataComment);
+		return "deleted successfully";
 	}
 
 }
