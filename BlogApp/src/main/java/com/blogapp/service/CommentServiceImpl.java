@@ -90,9 +90,7 @@ public class CommentServiceImpl implements CommentService{
 		Blog blog = opt.get();
 		List<Comment> comments = blog.getComments();
 		Comment dataComment = optCmnt.get();
-		System.out.println(comments);
 		comments.remove(dataComment);
-		System.out.println(comments);
 		blog.setComments(comments);
 		blogDao.save(blog);
 		commentDao.delete(dataComment);
