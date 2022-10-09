@@ -12,4 +12,8 @@ public interface CommentService {
 	public Comment updateCommentInABlogById(Comment comment, Integer blogId, Integer commentId);
 	
 	public List<Comment> getAllCommentByPostId(Integer blogId);
+	
+	public Comment getCommentByCommentIdAndPostId(Integer blogId, Integer commentId);
+	
+	public String deleteCommentByCommentIdAndPostId(Integer blogId, Integer commentId);
 }
