@@ -13,6 +13,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Data
@@ -27,5 +28,7 @@ public class Comment {
 	@Column(columnDefinition = "TEXT")
    private String commentBody;
    private String name;
+
+    @UpdateTimestamp
    private LocalDateTime commentTime;
 }

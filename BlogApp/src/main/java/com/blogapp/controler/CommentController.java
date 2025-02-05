@@ -1,4 +1,4 @@
-package com.blogapp.controleer;
+package com.blogapp.controler;
 
 import java.util.List;
 

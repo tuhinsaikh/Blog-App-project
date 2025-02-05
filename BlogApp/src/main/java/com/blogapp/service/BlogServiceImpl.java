@@ -46,12 +46,16 @@ public class BlogServiceImpl implements BlogService{
 	public Blog updateBlogById(Blog blog, Integer blogId) {
 		Optional<Blog> opt = blogDao.findById(blogId);
 		if(opt.isEmpty()) {
-			throw new BlogException("blog not found with the blogId "+blogId+"");
+			throw new BlogException("blog not found with the blogId "+blogId);
 		}
 		Blog databaseBlog = opt.get();
-		databaseBlog.setBody(blog.getBody());
-		databaseBlog.setTitle(blog.getTitle());
-		databaseBlog.setName(blog.getName());
+		if(blog.getBody()!=null && !blog.getBody().isEmpty()) {
+			String sanitizedBody = blog.getBody().replace("\n", "");
+			databaseBlog.setBody(sanitizedBody);
+		}
+		if(blog.getTitle()!=null && !blog.getTitle().isEmpty()){
+			databaseBlog.setTitle(blog.getTitle());
+		}
 		return blogDao.save(databaseBlog);
 	}
 

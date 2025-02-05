@@ -48,8 +48,12 @@ public class CommentServiceImpl implements CommentService{
 			throw new CommentException("comment not found");
 		}
 		Comment dataComment = optCmnt.get();
-		dataComment.setCommentBody(comment.getCommentBody());
-		dataComment.setName(comment.getName());
+		if(comment.getCommentBody() == null || comment.getCommentBody().isEmpty()){
+			throw new CommentException("comment body empty or null");
+		}else{
+			dataComment.setCommentBody(comment.getCommentBody());
+		}
+		//dataComment.setName(comment.getName());
 		return commentDao.save(dataComment);
 	}
 
